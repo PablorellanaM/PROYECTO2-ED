@@ -1,9 +1,9 @@
 from py2neo import Graph
+import sys
 
-# Conectar a Neo4j
-url = "bolt://localhost:7687"  # Asegúrate de usar la URL correcta para tu instancia Neo4j
+url = "bolt://localhost:7687"  # Asegúrate de que esta URL sea correcta
 username = "neo4j"
-password = "tu_contraseña"
+password = "PDR2024ED"
 graph = Graph(url, auth=(username, password))
 
 # Función para recomendar libros basada en contenido y colaboración
