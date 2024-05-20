@@ -101,6 +101,14 @@ def recommend():
     username = session['user_id']
     print(f"Usuario actual: {username}")
     
+    # Verificar qué libros ha leído el usuario actual
+    user_books_query = """
+    MATCH (u:User {username: $username})-[:HAS_READ]->(b:Book)
+    RETURN b.title AS title
+    """
+    user_books = graph.run(user_books_query, username=username).data()
+    print("Libros leídos por el usuario actual:", user_books)
+    
     # Obtener recomendaciones de libros
     query = """
     MATCH (u:User {username: $username})-[:HAS_READ]->(b:Book)<-[:HAS_READ]-(other:User)-[:HAS_READ]->(rec:Book)
@@ -114,7 +122,6 @@ def recommend():
     print("Recomendaciones obtenidas:", recommendations)  # Añadir impresión para verificar los datos
     
     return render_template('recommend.html', recommendations=recommendations)
-
 
 @app.route('/like_book/<title>')
 def like_book(title):
