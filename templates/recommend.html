@@ -1,16 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recomendaciones</title>
+    <style>
+        .book {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+        }
+        .book img {
+            max-width: 100px;
+            display: block;
+        }
+        .book-info {
+            display: inline-block;
+            vertical-align: top;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Recomendaciones de Libros</h1>
     <ul>
-        {% for rec in recommendations %}
-            <li>{{ rec.title }}</li>
-        {% endfor %}
+        {% if recommendations %}
+            {% for rec in recommendations %}
+                <li class="book">
+                    <img src="{{ url_for('static', filename='images/' + rec.title | replace(' ', '_') + '.jpg') }}" alt="Foto de {{ rec.title }}">
+                    <div class="book-info">
+                        <h2>{{ rec.title }}</h2>
+                        <p>{{ rec.description }}</p>
+                        <a href="{{ url_for('like_book', title=rec.title) }}">Like</a>
+                    </div>
+                    <form action="{{ url_for('upload_photo', title=rec.title) }}" method="post" enctype="multipart/form-data">
+                        <input type="file" name="photo">
+                        <input type="submit" value="Cargar Foto">
+                    </form>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No hay recomendaciones disponibles.</li>
+        {% endif %}
     </ul>
     <a href="{{ url_for('dashboard') }}">Volver al Panel</a>
 </body>

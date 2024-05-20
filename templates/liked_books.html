@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros que te gustaron</title>
+</head>
+<body>
+    <h1>Libros que te gustaron</h1>
+    <ul>
+        {% for book in liked_books %}
+            <li>{{ book.title }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard') }}">Volver al Panel</a>
+</body>
+</html>
