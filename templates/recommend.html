@@ -5,6 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recomendaciones de Libros</title>
     <link rel="stylesheet" href="{{ url_for('custom_static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .book-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .book-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .book-item img {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .book-item h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .book-item p {
+            margin: 5px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-like {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-like:hover {
+            background-color: #218838;
+        }
+
+        .btn-unlike {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-unlike:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,10 +98,17 @@
                 {% for book in recommendations %}
                     <li class="book-item">
                         <img src="{{ url_for('static', filename='images/' ~ book.image) }}" alt="Foto del libro">
-                        <h2>{{ book.title }}</h2>
-                        <p><strong>Autor:</strong> {{ book.author }}</p>
-                        <p><strong>Género:</strong> {{ book.genre }}</p>
-                        <p>{{ book.description }}</p>
+                        <div>
+                            <h2>{{ book.title }}</h2>
+                            <p><strong>Autor:</strong> {{ book.author }}</p>
+                            <p><strong>Género:</strong> {{ book.genre }}</p>
+                            <p>{{ book.description }}</p>
+                            {% if book.liked %}
+                                <a href="{{ url_for('unlike_book', title=book.title) }}" class="btn btn-unlike">Ya no me gusta</a>
+                            {% else %}
+                                <a href="{{ url_for('like_book', title=book.title) }}" class="btn btn-like">Me gusta</a>
+                            {% endif %}
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -26,4 +117,6 @@
         {% endif %}
     </div>
 </body>
+</html>
+
 </html>

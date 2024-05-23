@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libros que te Gustaron</title>
+    <title>Libros que me Gustan</title>
     <link rel="stylesheet" href="{{ url_for('custom_static', filename='styles.css') }}">
     <style>
         body {
@@ -13,52 +13,52 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         h1 {
             color: #007BFF;
             text-align: center;
             margin-bottom: 20px;
         }
+
         .book-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            list-style: none;
+            padding: 0;
         }
+
         .book-item {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: calc(33.333% - 20px);
-            box-sizing: border-box;
-            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
         }
+
         .book-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 15px;
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
         }
+
         .book-item h2 {
-            font-size: 1.25em;
-            margin: 0 0 10px;
+            margin: 0;
             color: #333;
         }
+
         .book-item p {
-            margin: 0 0 10px;
-            color: #666;
+            margin: 5px 0;
         }
-        .book-item .genre,
-        .book-item .author {
-            font-weight: bold;
-        }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -66,43 +66,37 @@
             border-radius: 5px;
             text-align: center;
             cursor: pointer;
-            width: 100%;
             margin-top: 10px;
-            text-decoration: none;
         }
-        .btn-primary {
-            background-color: #007BFF;
+
+        .btn-unlike {
+            background-color: #dc3545;
             color: #fff;
             border: none;
         }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: #fff;
-            border: none;
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268;
+
+        .btn-unlike:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Libros que te Gustaron</h1>
-        <div class="book-list">
+        <h1>Libros que me Gustan</h1>
+        <ul class="book-list">
             {% for book in liked_books %}
-                <div class="book-item">
-                    <img src="{{ url_for('static', filename='images/' ~ book.image) }}" alt="Imagen de {{ book.title }}">
-                    <h2>{{ book.title }}</h2>
-                    <p class="genre">Género: {{ book.genre }}</p>
-                    <p class="author">Autor: {{ book.author }}</p>
-                    <p>{{ book.description }}</p>
-                    <a href="{{ url_for('unlike_book', title=book.title) }}" class="btn btn-secondary">Ya no me gusta</a>
-                </div>
+                <li class="book-item">
+                    <img src="{{ url_for('static', filename='images/' ~ book.image) }}" alt="Foto del libro">
+                    <div>
+                        <h2>{{ book.title }}</h2>
+                        <p><strong>Autor:</strong> {{ book.author }}</p>
+                        <p><strong>Género:</strong> {{ book.genre }}</p>
+                        <p>{{ book.description }}</p>
+                        <a href="{{ url_for('unlike_book', title=book.title) }}" class="btn btn-unlike">Ya no me gusta</a>
+                    </div>
+                </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
 </body>
 </html>

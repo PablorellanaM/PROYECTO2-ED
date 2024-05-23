@@ -139,6 +139,16 @@ def recommend():
     """
     recommendations = graph.run(recommendations_query, genres=genres, authors=authors).data()
 
+    # Verificar si el usuario ha marcado el libro como "Me gusta"
+    liked_books_query = """
+    MATCH (u:User {username: $username})-[:LIKED]->(b:Book)
+    RETURN b.title AS title
+    """
+    liked_books = [record['title'] for record in graph.run(liked_books_query, username=username).data()]
+
+    for book in recommendations:
+        book['liked'] = book['title'] in liked_books
+
     return render_template('recommend.html', recommendations=recommendations)
 
 @app.route('/like_book/<title>')
@@ -171,7 +181,7 @@ def unlike_book(title):
     """
     graph.run(query, username=username, title=title)
     flash("Libro desmarcado como me gusta")
-    return redirect(url_for('liked_books'))
+    return redirect(url_for('recommend'))
 
 @app.route('/liked_books')
 def liked_books():
