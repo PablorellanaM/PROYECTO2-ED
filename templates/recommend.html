@@ -9,28 +9,21 @@
 <body>
     <div class="container">
         <h1>Recomendaciones de Libros</h1>
-        <ul>
-            {% if recommendations %}
-                {% for rec in recommendations %}
-                    <li class="book">
-                        <img src="{{ url_for('static', filename='images/' + rec.title.replace(' ', '_') + '.jpg') }}" alt="Foto del libro">
-                        <div class="book-info">
-                            <h2>{{ rec.title }}</h2>
-                            <p>{{ rec.description }}</p>
-                            <p><strong>Género:</strong> {{ rec.genre }}</p>
-                            <a class="btn btn-primary" href="{{ url_for('like_book', title=rec.title) }}">Me gusta</a>
-                            <form action="{{ url_for('upload_photo', title=rec.title) }}" method="post" enctype="multipart/form-data">
-                                <input type="file" name="photo">
-                                <input class="btn btn-primary" type="submit" value="Cargar Foto">
-                            </form>
-                        </div>
+        {% if recommendations %}
+            <ul class="book-list">
+                {% for book in recommendations %}
+                    <li class="book-item">
+                        <img src="{{ url_for('static', filename='images/' ~ book.image) }}" alt="Foto del libro">
+                        <h2>{{ book.title }}</h2>
+                        <p><strong>Autor:</strong> {{ book.author }}</p>
+                        <p><strong>Género:</strong> {{ book.genre }}</p>
+                        <p>{{ book.description }}</p>
                     </li>
                 {% endfor %}
-            {% else %}
-                <p>No hay recomendaciones disponibles porque el usuario actual no ha leído suficientes libros o no hay usuarios similares que hayan leído libros diferentes.</p>
-            {% endif %}
-        </ul>
-        <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Volver al Panel</a>
+            </ul>
+        {% else %}
+            <p>No hay recomendaciones disponibles en este momento.</p>
+        {% endif %}
     </div>
 </body>
 </html>
