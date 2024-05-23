@@ -13,22 +13,20 @@
             {% if liked_books %}
                 {% for book in liked_books %}
                     <li class="book">
-                        <img src="{{ url_for('static', filename='images/' + book.title | replace(' ', '_') + '.jpg') }}" alt="Portada de {{ book.title }}">
+                        <img src="{{ url_for('static', filename='images/' + book.title.replace(' ', '_') + '.jpg') }}" alt="Foto del libro">
                         <div class="book-info">
                             <h2>{{ book.title }}</h2>
                             <p>{{ book.description }}</p>
                             <p><strong>Género:</strong> {{ book.genre }}</p>
-                            <p><strong>Autor:</strong> {{ book.author }}</p>
                             <a class="button" href="{{ url_for('unlike_book', title=book.title) }}">Ya no me gusta</a>
                         </div>
                     </li>
                 {% endfor %}
             {% else %}
-                <p>No has marcado ningún libro como me gusta.</p>
+                <p>No hay libros que te hayan gustado.</p>
             {% endif %}
         </ul>
         <a class="button" href="{{ url_for('dashboard') }}">Volver al Panel</a>
     </div>
 </body>
 </html>
-

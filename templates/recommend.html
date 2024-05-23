@@ -13,12 +13,11 @@
             {% if recommendations %}
                 {% for rec in recommendations %}
                     <li class="book">
-                        <img src="{{ url_for('static', filename='images/' + rec.title | replace(' ', '_') + '.jpg') }}" alt="Portada de {{ rec.title }}">
+                        <img src="{{ url_for('static', filename='images/' + rec.title | replace(' ', '_') + '.jpg') }}" alt="Foto del libro">
                         <div class="book-info">
                             <h2>{{ rec.title }}</h2>
                             <p>{{ rec.description }}</p>
                             <p><strong>Género:</strong> {{ rec.genre }}</p>
-                            <p><strong>Autor:</strong> {{ rec.author }}</p>
                             <a class="button" href="{{ url_for('like_book', title=rec.title) }}">Me gusta</a>
                             <form action="{{ url_for('upload_photo', title=rec.title) }}" method="post" enctype="multipart/form-data">
                                 <input type="file" name="photo">
