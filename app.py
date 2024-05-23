@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 from py2neo import Graph, Node, Relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -10,10 +10,14 @@ app.secret_key = 'tu_clave_secreta'
 url = "bolt://localhost:7687"
 username = "neo4j"
 password = "PDR2024ED"
-try:
-    graph = Graph(url, auth=(username, password))
-except Exception as e:
-    print(f"Error al conectar a Neo4j: {e}")
+graph = Graph(url, auth=(username, password))
+
+# Configuración para servir archivos estáticos
+app.config['UPLOAD_FOLDER'] = 'static/images'
+
+@app.route('/static/<path:filename>')
+def custom_static(filename):
+    return send_from_directory('static', filename)
 
 # Lista de libros con descripciones
 books = [
@@ -34,10 +38,7 @@ books = [
 for book in books:
     if not graph.run("MATCH (b:Book {title: $title}) RETURN b", title=book['title']).data():
         graph.run("CREATE (b:Book {title: $title, description: $description})", title=book['title'], description=book['description'])
-
-UPLOAD_FOLDER = 'static/images'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+    
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -108,6 +109,9 @@ def recommend():
     """
     user_books = graph.run(user_books_query, username=username).data()
     print("Libros leídos por el usuario actual:", user_books)
+    
+    if not user_books:
+        print("El usuario actual no ha leído ningún libro.")
     
     # Obtener recomendaciones de libros
     query = """

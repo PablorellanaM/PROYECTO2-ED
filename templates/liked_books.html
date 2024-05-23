@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libros que te gustaron</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Libros que te gustaron</h1>
-    <ul>
-        {% for book in liked_books %}
-            <li>{{ book.title }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('dashboard') }}">Volver al Panel</a>
+    <div class="container">
+        <h1>Libros que te gustaron</h1>
+        <ul>
+            {% for book in liked_books %}
+                <li>{{ book.title }}</li>
+            {% endfor %}
+        </ul>
+        <a class="button" href="{{ url_for('dashboard') }}">Volver al Panel</a>
+    </div>
 </body>
 </html>
