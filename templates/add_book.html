@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Libro</title>
+    <title>Agregar Libro Leído</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Agregar Libro Leído</h1>
-        <form method="post" action="{{ url_for('add_book') }}">
+        <form method="POST">
             <label for="book_title">Título del Libro:</label>
-            <input type="text" id="book_title" name="book_title" required><br><br>
-            <input class="button" type="submit" value="Agregar">
+            <input type="text" id="book_title" name="book_title" required><br>
+            <label for="genre">Género:</label>
+            <input type="text" id="genre" name="genre" required><br>
+            <label for="author">Autor:</label>
+            <input type="text" id="author" name="author" required><br>
+            <input type="submit" value="Agregar Libro">
         </form>
+        <a class="button" href="{{ url_for('dashboard') }}">Volver al Panel</a>
     </div>
 </body>
 </html>

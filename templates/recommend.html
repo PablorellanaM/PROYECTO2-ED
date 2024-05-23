@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recomendaciones</title>
+    <title>Recomendaciones de Libros</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Recomendaciones de Libros</h1>
-        <ul>
-            {% if recommendations %}
-                {% for rec in recommendations %}
+        {% if recommendations %}
+            <ul>
+                {% for book in recommendations %}
                     <li class="book">
-                        <img src="{{ url_for('static', filename='images/' + rec.title | replace(' ', '_') + '.jpg') }}" alt="Foto de {{ rec.title }}">
                         <div class="book-info">
-                            <h2>{{ rec.title }}</h2>
-                            <p>{{ rec.description }}</p>
-                            <a class="button" href="{{ url_for('like_book', title=rec.title) }}">Like</a>
+                            <h2>{{ book.title }}</h2>
+                            <p><strong>Autor:</strong> {{ book.author }}</p>
+                            <p><strong>Género:</strong> {{ book.genre }}</p>
+                            <p>{{ book.description }}</p>
+                            <a class="button" href="{{ url_for('like_book', title=book.title) }}">Me gusta</a>
                         </div>
-                        <form action="{{ url_for('upload_photo', title=rec.title) }}" method="post" enctype="multipart/form-data">
-                            <input type="file" name="photo">
-                            <input class="button" type="submit" value="Cargar Foto">
-                        </form>
                     </li>
                 {% endfor %}
-            {% else %}
-                <li>No hay recomendaciones disponibles porque el usuario actual no ha leído suficientes libros o no hay usuarios similares que hayan leído libros diferentes.</li>
-            {% endif %}
-        </ul>
+            </ul>
+        {% else %}
+            <p>No hay recomendaciones disponibles porque el usuario actual no ha leído suficientes libros o no hay usuarios similares que hayan leído libros diferentes.</p>
+        {% endif %}
         <a class="button" href="{{ url_for('dashboard') }}">Volver al Panel</a>
     </div>
 </body>
