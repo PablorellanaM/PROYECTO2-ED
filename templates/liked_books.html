@@ -78,6 +78,17 @@
         .btn-unlike:hover {
             background-color: #c82333;
         }
+
+        .btn-secondary {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +108,7 @@
                 </li>
             {% endfor %}
         </ul>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Volver al Menú Principal</a>
     </div>
 </body>
 </html>

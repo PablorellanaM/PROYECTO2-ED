@@ -72,6 +72,17 @@
         .btn-primary:hover {
             background-color: #218838;
         }
+
+        .btn-secondary {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +115,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Agregar Libro</button>
         </form>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Volver al Menú Principal</a>
     </div>
 </body>
 </html>
