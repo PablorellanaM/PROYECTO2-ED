@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
     margin: 0;
     padding: 0;
 }
@@ -8,72 +8,55 @@ body {
 .container {
     width: 80%;
     margin: 0 auto;
-    padding: 20px;
     background-color: #fff;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: #333;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-select {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button,
-input[type="submit"],
-a.button {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
     text-align: center;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover,
-input[type="submit"]:hover,
-a.button:hover {
-    background-color: #218838;
 }
 
 ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
-li.book {
+.book {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: 20px 0;
 }
 
-img {
-    max-width: 100px;
-    margin-right: 10px;
+.book img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 20px;
 }
 
 .book-info {
     flex-grow: 1;
+}
+
+.book-info h2 {
+    margin: 0 0 10px 0;
+}
+
+.book-info p {
+    margin: 5px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background-color: #218838;
 }

@@ -13,7 +13,7 @@
             {% if recommendations %}
                 {% for rec in recommendations %}
                     <li class="book">
-                        <img src="{{ url_for('custom_static', filename='images/' + rec.title.replace(' ', '_') + '.jpg') }}" alt="Foto de {{ rec.title }}">
+                        <img src="{{ url_for('static', filename='images/' + rec.title | replace(' ', '_') + '.jpg') }}" alt="Portada de {{ rec.title }}">
                         <div class="book-info">
                             <h2>{{ rec.title }}</h2>
                             <p>{{ rec.description }}</p>

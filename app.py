@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
-from py2neo import Graph, Node, Relationship
+from py2neo import Graph
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
@@ -13,43 +13,41 @@ password = "PDR2024ED"
 graph = Graph(url, auth=(username, password))
 
 # Configuración para servir archivos estáticos
-UPLOAD_FOLDER = 'static/images'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = 'static/images'
 
 @app.route('/static/<path:filename>')
 def custom_static(filename):
     return send_from_directory('static', filename)
 
+# Lista de géneros de libros
+genres = [
+    "Ficción", "No Ficción", "Misterio", "Romance", "Ciencia Ficción",
+    "Fantasía", "Biografía", "Historia", "Autoayuda", "Negocios",
+    "Poesía", "Drama", "Suspenso", "Terror", "Humor"
+]
+
 # Lista de libros con descripciones, géneros y autores
 books = [
-    {"title": "Cien años de soledad", "description": "Novela de Gabriel García Márquez que narra la historia de la familia Buendía a lo largo de varias generaciones.", "genre": "Realismo mágico", "author": "Gabriel García Márquez"},
-    {"title": "Don Quijote de la Mancha", "description": "Obra cumbre de la literatura española escrita por Miguel de Cervantes, relata las aventuras del ingenioso hidalgo Don Quijote.", "genre": "Aventura", "author": "Miguel de Cervantes"},
+    {"title": "Cien años de soledad", "description": "Novela de Gabriel García Márquez que narra la historia de la familia Buendía a lo largo de varias generaciones.", "genre": "Ficción", "author": "Gabriel García Márquez"},
+    {"title": "Don Quijote de la Mancha", "description": "Obra cumbre de la literatura española escrita por Miguel de Cervantes, relata las aventuras del ingenioso hidalgo Don Quijote.", "genre": "Ficción", "author": "Miguel de Cervantes"},
     {"title": "La sombra del viento", "description": "Novela de Carlos Ruiz Zafón ambientada en la Barcelona de mediados del siglo XX, donde un joven descubre un misterioso libro.", "genre": "Misterio", "author": "Carlos Ruiz Zafón"},
     {"title": "El amor en los tiempos del cólera", "description": "Novela de Gabriel García Márquez que narra una historia de amor que perdura a lo largo de décadas.", "genre": "Romance", "author": "Gabriel García Márquez"},
     {"title": "Ficciones", "description": "Colección de cuentos de Jorge Luis Borges que exploran temas como los laberintos, los espejos y los sueños.", "genre": "Fantasía", "author": "Jorge Luis Borges"},
     {"title": "Rayuela", "description": "Novela de Julio Cortázar que invita al lector a saltar de un capítulo a otro, creando múltiples caminos de lectura.", "genre": "Ficción", "author": "Julio Cortázar"},
-    {"title": "La casa de los espíritus", "description": "Novela de Isabel Allende que narra la historia de la familia Trueba a lo largo de varias generaciones en Chile.", "genre": "Realismo mágico", "author": "Isabel Allende"},
-    {"title": "Pedro Páramo", "description": "Novela de Juan Rulfo que narra la historia de un hombre que viaja al pueblo de Comala en busca de su padre.", "genre": "Realismo mágico", "author": "Juan Rulfo"},
+    {"title": "La casa de los espíritus", "description": "Novela de Isabel Allende que narra la historia de la familia Trueba a lo largo de varias generaciones en Chile.", "genre": "Fantasía", "author": "Isabel Allende"},
+    {"title": "Pedro Páramo", "description": "Novela de Juan Rulfo que narra la historia de un hombre que viaja al pueblo de Comala en busca de su padre.", "genre": "Fantasía", "author": "Juan Rulfo"},
     {"title": "Crónica de una muerte anunciada", "description": "Novela de Gabriel García Márquez que cuenta la historia del asesinato de Santiago Nasar en un pequeño pueblo colombiano.", "genre": "Ficción", "author": "Gabriel García Márquez"},
-    {"title": "El túnel", "description": "Novela de Ernesto Sabato que narra la historia de un pintor obsesionado con una mujer a la que cree comprender profundamente.", "genre": "Thriller", "author": "Ernesto Sabato"},
-    {"title": "La ciudad y los perros", "description": "Novela de Mario Vargas Llosa que describe la vida de los cadetes en una academia militar en Lima, Perú.", "genre": "Drama", "author": "Mario Vargas Llosa"},
-    {"title": "El Principito", "description": "Novela de Antoine de Saint-Exupéry que narra la historia de un pequeño príncipe que viaja de planeta en planeta.", "genre": "Fantasía", "author": "Antoine de Saint-Exupéry"},
-    {"title": "Cumbres Borrascosas", "description": "Novela de Emily Brontë que narra una historia de amor y venganza en los páramos de Yorkshire.", "genre": "Romance", "author": "Emily Brontë"},
-    {"title": "Matar a un ruiseñor", "description": "Novela de Harper Lee que aborda temas de racismo e injusticia en el sur de Estados Unidos.", "genre": "Ficción", "author": "Harper Lee"},
-    {"title": "1984", "description": "Novela de George Orwell que describe una sociedad distópica bajo un régimen totalitario.", "genre": "Ciencia ficción", "author": "George Orwell"},
-    {"title": "El gran Gatsby", "description": "Novela de F. Scott Fitzgerald que narra la historia del misterioso millonario Jay Gatsby y su amor por Daisy Buchanan.", "genre": "Ficción", "author": "F. Scott Fitzgerald"},
-    {"title": "Orgullo y prejuicio", "description": "Novela de Jane Austen que explora temas de amor y matrimonio en la sociedad inglesa del siglo XIX.", "genre": "Romance", "author": "Jane Austen"},
-    {"title": "El retrato de Dorian Gray", "description": "Novela de Oscar Wilde sobre un joven cuya belleza se conserva mientras su retrato envejece.", "genre": "Fantasía", "author": "Oscar Wilde"},
-    {"title": "El guardián entre el centeno", "description": "Novela de J.D. Salinger sobre las experiencias de un adolescente en Nueva York.", "genre": "Ficción", "author": "J.D. Salinger"},
-    {"title": "Los miserables", "description": "Novela de Victor Hugo que narra la vida de varios personajes en la Francia del siglo XIX.", "genre": "Drama", "author": "Victor Hugo"},
-    {"title": "La Odisea", "description": "Poema épico de Homero que narra las aventuras de Odiseo en su viaje de regreso a Ítaca.", "genre": "Épica", "author": "Homero"},
-    {"title": "El hobbit", "description": "Novela de J.R.R. Tolkien sobre las aventuras de Bilbo Bolsón en la Tierra Media.", "genre": "Fantasía", "author": "J.R.R. Tolkien"},
-    {"title": "Alicia en el País de las Maravillas", "description": "Novela de Lewis Carroll sobre las aventuras de una niña en un mundo fantástico.", "genre": "Fantasía", "author": "Lewis Carroll"},
-    {"title": "Frankenstein", "description": "Novela de Mary Shelley sobre un científico que crea un ser vivo a partir de partes de cadáveres.", "genre": "Horror", "author": "Mary Shelley"},
-    {"title": "Drácula", "description": "Novela de Bram Stoker sobre el conde Drácula y su intento de trasladarse a Inglaterra.", "genre": "Horror", "author": "Bram Stoker"},
+    {"title": "El túnel", "description": "Novela de Ernesto Sabato que narra la historia de un pintor obsesionado con una mujer a la que cree comprender profundamente.", "genre": "Suspenso", "author": "Ernesto Sabato"},
+    {"title": "La ciudad y los perros", "description": "Novela de Mario Vargas Llosa que describe la vida de los cadetes en una academia militar en Lima, Perú.", "genre": "Ficción", "author": "Mario Vargas Llosa"},
+    {"title": "1984", "description": "Una novela distópica de George Orwell que explora un futuro totalitario bajo el control del Gran Hermano.", "genre": "Ciencia Ficción", "author": "George Orwell"},
+    {"title": "Orgullo y prejuicio", "description": "Una novela romántica de Jane Austen que trata sobre la vida y el amor en la sociedad inglesa del siglo XIX.", "genre": "Romance", "author": "Jane Austen"},
+    {"title": "El Principito", "description": "Un cuento filosófico de Antoine de Saint-Exupéry sobre un joven príncipe que explora diferentes planetas.", "genre": "Fantasía", "author": "Antoine de Saint-Exupéry"},
+    {"title": "Drácula", "description": "Una novela de terror gótica de Bram Stoker sobre el famoso vampiro Conde Drácula.", "genre": "Terror", "author": "Bram Stoker"},
+    {"title": "La Odisea", "description": "Una epopeya griega atribuida a Homero que narra las aventuras de Odiseo en su regreso a Ítaca.", "genre": "Historia", "author": "Homero"},
+    {"title": "El alquimista", "description": "Una novela de Paulo Coelho sobre la búsqueda espiritual de un pastor andaluz.", "genre": "Autoayuda", "author": "Paulo Coelho"},
+    {"title": "El hombre en busca de sentido", "description": "Un libro de Viktor Frankl sobre su experiencia en campos de concentración nazis y su teoría de la logoterapia.", "genre": "Autoayuda", "author": "Viktor Frankl"},
+    {"title": "La Divina Comedia", "description": "Una obra maestra de la literatura italiana escrita por Dante Alighieri, que describe el viaje del alma a través del Infierno, el Purgatorio y el Paraíso.", "genre": "Poesía", "author": "Dante Alighieri"},
+    {"title": "Matar a un ruiseñor", "description": "Una novela de Harper Lee que aborda temas de racismo e injusticia en el sur de Estados Unidos.", "genre": "Drama", "author": "Harper Lee"},
 ]
 
 # Crear nodos de libros en Neo4j
@@ -102,26 +100,26 @@ def add_book():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
-        book_title = request.form['book_title']
-        book_genre = request.form['book_genre']
-        book_author = request.form['book_author']
+        book_title = request.form['title']
+        book_genre = request.form['genre']
+        book_author = request.form['author']
         username = session['user_id']
 
-        # Crear nodo de libro si no existe
+        # Crear el nodo del libro si no existe
         if not graph.run("MATCH (b:Book {title: $title}) RETURN b", title=book_title).data():
             graph.run("CREATE (b:Book {title: $title, genre: $genre, author: $author})",
                       title=book_title, genre=book_genre, author=book_author)
 
         # Relacionar usuario con el libro leído
         query = """
-        MATCH (u:User {username: $username}), (b:Book {title: $book_title})
+        MATCH (u:User {username: $username}), (b:Book {title: $title})
         CREATE (u)-[:HAS_READ]->(b)
         """
-        graph.run(query, username=username, book_title=book_title)
+        graph.run(query, username=username, title=book_title)
 
         flash("Libro agregado exitosamente")
         return redirect(url_for('dashboard'))
-    return render_template('add_book.html')
+    return render_template('add_book.html', genres=genres)
 
 @app.route('/recommend')
 def recommend():
@@ -130,14 +128,12 @@ def recommend():
 
     username = session['user_id']
 
-    # Obtener recomendaciones de libros basadas en el género y autor de los libros leídos
+    # Obtener recomendaciones de libros
     query = """
-    MATCH (u:User {username: $username})-[:HAS_READ]->(b:Book)
-    WITH u, COLLECT(DISTINCT b.genre) AS genres, COLLECT(DISTINCT b.author) AS authors
-    MATCH (rec:Book)
-    WHERE (rec.genre IN genres OR rec.author IN authors)
-    AND NOT EXISTS((u)-[:HAS_READ]->(rec))
-    RETURN rec.title AS title, rec.description AS description, rec.genre AS genre, rec.author AS author
+    MATCH (u:User {username: $username})-[:HAS_READ]->(b:Book)<-[:HAS_READ]-(other:User)-[:HAS_READ]->(rec:Book)
+    WHERE NOT EXISTS((u)-[:HAS_READ]->(rec))
+    RETURN rec.title AS title, rec.description AS description, rec.genre AS genre, rec.author AS author, COUNT(*) AS count
+    ORDER BY count DESC
     LIMIT 5
     """
     recommendations = graph.run(query, username=username).data()
@@ -151,31 +147,30 @@ def like_book(title):
 
     username = session['user_id']
 
-    # Verificar si el libro ya está marcado como "me gusta"
+    # Relacionar usuario con el libro likeado
     query = """
-    MATCH (u:User {username: $username})-[:LIKED]->(b:Book {title: $title})
-    RETURN b
+    MATCH (u:User {username: $username}), (b:Book {title: $title})
+    CREATE (u)-[:LIKED]->(b)
     """
-    liked_book = graph.run(query, username=username, title=title).data()
-
-    if liked_book:
-        # Si el libro ya está marcado como "me gusta", eliminar la relación LIKED
-        query = """
-        MATCH (u:User {username: $username})-[r:LIKED]->(b:Book {title: $title})
-        DELETE r
-        """
-        graph.run(query, username=username, title=title)
-        flash("Libro removido de 'me gusta'")
-    else:
-        # Si el libro no está marcado como "me gusta", crear la relación LIKED
-        query = """
-        MATCH (u:User {username: $username}), (b:Book {title: $title})
-        CREATE (u)-[:LIKED]->(b)
-        """
-        graph.run(query, username=username, title=title)
-        flash("Libro marcado como me gusta")
-
+    graph.run(query, username=username, title=title)
+    flash("Libro marcado como me gusta")
     return redirect(url_for('recommend'))
+
+@app.route('/unlike_book/<title>')
+def unlike_book(title):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    username = session['user_id']
+
+    # Eliminar relación de libro likeado
+    query = """
+    MATCH (u:User {username: $username})-[r:LIKED]->(b:Book {title: $title})
+    DELETE r
+    """
+    graph.run(query, username=username, title=title)
+    flash("Libro desmarcado como me gusta")
+    return redirect(url_for('liked_books'))
 
 @app.route('/liked_books')
 def liked_books():
@@ -199,14 +194,12 @@ def upload_photo(title):
         return redirect(url_for('login'))
 
     if 'photo' not in request.files:
-        flash('No file part')
-        return redirect(url_for('recommend'))
+        return 'No file part'
 
     file = request.files['photo']
 
     if file.filename == '':
-        flash('No selected file')
-        return redirect(url_for('recommend'))
+        return 'No selected file'
 
     if file:
         filename = title.replace(' ', '_') + '.jpg'

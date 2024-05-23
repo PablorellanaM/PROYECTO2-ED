@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libros que te gustaron</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Libros que te Gustaron</title>
+    <link rel="stylesheet" href="{{ url_for('custom_static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Libros que te gustaron</h1>
+        <h1>Libros que te Gustaron</h1>
         <ul>
-            {% for book in liked_books %}
-                <li>{{ book.title }}</li>
-            {% endfor %}
+            {% if liked_books %}
+                {% for book in liked_books %}
+                    <li class="book">
+                        <img src="{{ url_for('static', filename='images/' + book.title | replace(' ', '_') + '.jpg') }}" alt="Portada de {{ book.title }}">
+                        <div class="book-info">
+                            <h2>{{ book.title }}</h2>
+                            <p>{{ book.description }}</p>
+                            <p><strong>Género:</strong> {{ book.genre }}</p>
+                            <p><strong>Autor:</strong> {{ book.author }}</p>
+                            <a class="button" href="{{ url_for('unlike_book', title=book.title) }}">Ya no me gusta</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>No has marcado ningún libro como me gusta.</p>
+            {% endif %}
         </ul>
         <a class="button" href="{{ url_for('dashboard') }}">Volver al Panel</a>
     </div>
 </body>
 </html>
+
