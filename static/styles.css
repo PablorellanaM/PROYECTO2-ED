@@ -11,48 +11,48 @@ body {
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 30px;
 }
 
 h1 {
-    text-align: center;
     color: #333;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button,
+input[type="submit"],
+a.button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
     margin-top: 10px;
 }
 
-input[type="text"], input[type="password"], input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    box-sizing: border-box;
-}
-
-input[type="submit"], .button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover, .button:hover {
-    background-color: #45a049;
+button:hover,
+input[type="submit"]:hover,
+a.button:hover {
+    background-color: #218838;
 }
 
 ul {
@@ -63,28 +63,17 @@ ul {
 li.book {
     display: flex;
     align-items: center;
-    border: 1px solid #ddd;
-    margin: 10px 0;
+    margin-bottom: 10px;
     padding: 10px;
-    background-color: #fff;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.book img {
+img {
     max-width: 100px;
-    display: block;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .book-info {
-    display: inline-block;
-    vertical-align: top;
-}
-
-h2 {
-    margin: 0;
-}
-
-p {
-    margin: 5px 0 10px;
+    flex-grow: 1;
 }
