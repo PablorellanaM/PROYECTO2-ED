@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta'
+app.secret_key = 'EDPDR2024'
 
 # Configuración de la base de datos Neo4j
 url = "bolt://localhost:7687"
