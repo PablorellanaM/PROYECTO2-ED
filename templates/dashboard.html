@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Usuario</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('custom_static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Panel de Usuario</h1>
-        <a class="button" href="{{ url_for('add_book') }}">Agregar Libro Leído</a><br><br>
-        <a class="button" href="{{ url_for('recommend') }}">Recomendar Libros</a><br><br>
-        <a class="button" href="{{ url_for('liked_books') }}">Libros que te Gustaron</a><br><br>
-        <a class="button" href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        <div class="button-group">
+            <a href="{{ url_for('add_book') }}" class="btn btn-primary">Agregar Libro Leído</a>
+            <a href="{{ url_for('recommend') }}" class="btn btn-primary">Recomendar Libros</a>
+            <a href="{{ url_for('liked_books') }}" class="btn btn-primary">Libros que te Gustaron</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-primary">Cerrar Sesión</a>
+        </div>
     </div>
 </body>
 </html>

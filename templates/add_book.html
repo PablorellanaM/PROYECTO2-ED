@@ -5,40 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Libro Leído</title>
     <link rel="stylesheet" href="{{ url_for('custom_static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Agregar Libro Leído</h1>
-        <form action="{{ url_for('add_book') }}" method="post">
-            <label for="title">Título del Libro:</label>
-            <input type="text" id="title" name="title" required>
-
-            <label for="author">Autor:</label>
-            <input type="text" id="author" name="author" required>
-
-            <label for="genre">Género:</label>
-            <select id="genre" name="genre" required>
-                <option value="Ficcion">Ficción</option>
-                <option value="No Ficcion">No Ficción</option>
-                <option value="Misterio">Misterio</option>
-                <option value="Romance">Romance</option>
-                <option value="Ciencia Ficcion">Ciencia Ficción</option>
-                <option value="Fantasia">Fantasía</option>
-                <option value="Biografia">Biografía</option>
-                <option value="Historia">Historia</option>
-                <option value="Autoayuda">Autoayuda</option>
-                <option value="Negocios">Negocios</option>
-                <option value="Poesia">Poesía</option>
-                <option value="Drama">Drama</option>
-                <option value="Suspenso">Suspenso</option>
-                <option value="Terror">Terror</option>
-                <option value="Humor">Humor</option>
-            </select>
-
-            <label for="description">Descripción:</label>
-            <textarea id="description" name="description" rows="4" required></textarea>
-
-            <button type="submit">Agregar Libro</button>
+        <form method="POST" action="{{ url_for('add_book') }}">
+            <div class="form-group">
+                <label for="title">Título del Libro:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Autor del Libro:</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Género:</label>
+                <select id="genre" name="genre" required>
+                    <option value="Ficción">Ficción</option>
+                    <option value="No Ficción">No Ficción</option>
+                    <option value="Misterio">Misterio</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Ciencia Ficción">Ciencia Ficción</option>
+                    <option value="Fantasía">Fantasía</option>
+                    <option value="Biografía">Biografía</option>
+                    <option value="Historia">Historia</option>
+                    <option value="Autoayuda">Autoayuda</option>
+                    <option value="Negocios">Negocios</option>
+                    <option value="Poesía">Poesía</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Suspenso">Suspenso</option>
+                    <option value="Terror">Terror</option>
+                    <option value="Humor">Humor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Libro</button>
         </form>
     </div>
 </body>
