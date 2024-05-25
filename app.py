@@ -3,6 +3,7 @@ from py2neo import Graph
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+# Inicialización de la aplicación Flask
 app = Flask(__name__)
 app.secret_key = 'EDPDR2024'
 
@@ -19,7 +20,7 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 def custom_static(filename):
     return send_from_directory('static', filename)
 
-# Lista de géneros de libros
+# Lista de géneros de libros disponibles
 genres = [
     "Ficción", "No Ficción", "Misterio", "Romance", "Ciencia Ficción",
     "Fantasía", "Biografía", "Historia", "Autoayuda", "Negocios",
