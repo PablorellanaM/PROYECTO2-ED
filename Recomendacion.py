@@ -1,14 +1,14 @@
+#VERSION DE PRUEBAAAA
 from py2neo import Graph
 import sys
 
-url = "bolt://localhost:7687"  # Asegúrate de que esta URL sea correcta
+url = "bolt://localhost:7687"  
 username = "neo4j"
 password = "PDR2024ED"
 graph = Graph(url, auth=(username, password))
 
-# Función para recomendar libros basada en contenido y colaboración
 def recomendar_libros(usuario_id):
-    # Filtrado colaborativo: Encontrar usuarios con gustos similares y sus recomendaciones
+
     query_similares = """
     MATCH (u1:User)-[:RATED]->(b)<-[:RATED]-(u2:User)
     WHERE u1.user_id = $usuario_id AND u1 <> u2
@@ -17,7 +17,6 @@ def recomendar_libros(usuario_id):
     """
     similares = graph.run(query_similares, usuario_id=usuario_id).data()
     
-    # Filtrado basado en contenido: Recomendar libros con tags similares a los que el usuario ha valorado
     query_recomendaciones = """
     MATCH (u:User)-[:RATED]->(b:Book)-[:TAGGED_WITH]->(t:Tag),
           (b2:Book)-[:TAGGED_WITH]->(t) WHERE u.user_id = $usuario_id AND NOT (u)-[:RATED]->(b2)
@@ -26,7 +25,6 @@ def recomendar_libros(usuario_id):
     """
     recomendaciones = graph.run(query_recomendaciones, usuario_id=usuario_id).data()
     
-    # Combinar resultados y eliminar duplicados
     libros_recomendados = {rec['book']['title']: rec for rec in recomendaciones}
     for similar in similares:
         usuario_similar = similar['u2']['user_id']
@@ -38,8 +36,7 @@ def recomendar_libros(usuario_id):
     
     return libros_recomendados.values()
 
-# Ejemplo de uso
-usuario_id = 1  # Supongamos que este es el ID de un usuario en la base de datos
+usuario_id = 1  
 recomendaciones = recomendar_libros(usuario_id)
 for rec in recomendaciones:
     print(f"Libro: {rec['book']['title']}, Tags: {rec['tags']}, Rating Promedio: {rec['avgRating']}")
